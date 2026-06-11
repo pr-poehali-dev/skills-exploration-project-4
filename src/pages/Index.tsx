@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 
 const LEADS_URL = "https://functions.poehali.dev/5dc917cb-1c96-4cfd-b6c8-adb0aec19f31";
@@ -6,47 +6,11 @@ const IMG_BUILDING = "https://cdn.poehali.dev/projects/fb115b39-8c84-40f6-9584-7
 const IMG_TEAM = "https://cdn.poehali.dev/projects/fb115b39-8c84-40f6-9584-70685d6c64c1/files/c9fcb170-4888-4668-8d23-59110f32c444.jpg";
 const IMG_INTERIOR = "https://cdn.poehali.dev/projects/fb115b39-8c84-40f6-9584-70685d6c64c1/files/4b0be3c2-5eb0-40b1-81dc-b7b79b812fa2.jpg";
 
-// ─── Маска телефона Беларуси +375 (XX) XXX-XX-XX ───
-function usePhoneMask() {
-  const [value, setValue] = useState("");
-
-  const format = (raw: string) => {
-    const d = raw.replace(/\D/g, "");
-    // strip leading 375 if user typed it
-    const local = d.startsWith("375") ? d.slice(3) : d.startsWith("80") ? d.slice(1) : d;
-    const s = local.slice(0, 9);
-    if (!s) return "";
-    let out = "+375 (";
-    out += s.slice(0, 2);
-    if (s.length > 2) out += ") " + s.slice(2, 5);
-    if (s.length > 5) out += "-" + s.slice(5, 7);
-    if (s.length > 7) out += "-" + s.slice(7, 9);
-    return out;
-  };
-
-  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(format(e.target.value));
-  }, []);
-
-  const onFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    if (!e.target.value) setValue("+375 (");
-  }, []);
-
-  const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && value === "+375 (") {
-      e.preventDefault();
-      setValue("");
-    }
-  }, [value]);
-
-  const isValid = value.replace(/\D/g, "").length === 11;
-  return { value, onChange, onFocus, onKeyDown, isValid };
-}
 
 // ─── Попап с формой ───
 function LeadModal({ source, onClose }: { source: string; onClose: () => void }) {
   const [name, setName] = useState("");
-  const phone = usePhoneMask();
+  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
@@ -60,14 +24,14 @@ function LeadModal({ source, onClose }: { source: string; onClose: () => void })
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone.isValid) { setError("Введите полный номер телефона: +375 (XX) XXX-XX-XX"); return; }
+    if (!phone.trim()) { setError("Введите номер телефона"); return; }
     setError("");
     setLoading(true);
     try {
       const res = await fetch(LEADS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: phone.value, address, comment, source }),
+        body: JSON.stringify({ name, phone, address, comment, source }),
       });
       if (res.ok) { setSuccess(true); }
       else { setError("Ошибка отправки. Попробуйте ещё раз."); }
@@ -120,9 +84,8 @@ function LeadModal({ source, onClose }: { source: string; onClose: () => void })
                 Телефон <span style={{ color: "var(--gold)" }}>*</span>
               </label>
               <input
-                type="tel" value={phone.value} onChange={phone.onChange}
-                onFocus={phone.onFocus} onKeyDown={phone.onKeyDown}
-                placeholder="+375 (XX) XXX-XX-XX"
+                type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+                placeholder="+375 29 123 45 67"
                 className="input-dark w-full px-4 py-3 text-sm" style={{ borderRadius: 0 }}
               />
             </div>
@@ -328,7 +291,7 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
 // ─── Форма в секции контактов ───
 function ContactSectionForm() {
   const [name, setName] = useState("");
-  const phone = usePhoneMask();
+  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
@@ -337,14 +300,14 @@ function ContactSectionForm() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone.isValid) { setError("Введите полный номер телефона: +375 (XX) XXX-XX-XX"); return; }
+    if (!phone.trim()) { setError("Введите номер телефона"); return; }
     setError("");
     setLoading(true);
     try {
       const res = await fetch(LEADS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: phone.value, address, comment, source: "contact_section" }),
+        body: JSON.stringify({ name, phone, address, comment, source: "contact_section" }),
       });
       if (res.ok) { setSuccess(true); }
       else { setError("Ошибка отправки. Попробуйте ещё раз."); }
@@ -380,9 +343,8 @@ function ContactSectionForm() {
         <label className="text-xs uppercase tracking-[0.2em] block mb-2" style={{ color: "var(--smoke)" }}>
           Телефон <span style={{ color: "var(--gold)" }}>*</span>
         </label>
-        <input type="tel" value={phone.value} onChange={phone.onChange}
-          onFocus={phone.onFocus} onKeyDown={phone.onKeyDown}
-          placeholder="+375 (XX) XXX-XX-XX"
+        <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+          placeholder="+375 29 123 45 67"
           className="input-dark w-full px-4 py-3 text-sm" style={{ borderRadius: 0 }} />
       </div>
       <div>
