@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
+// v2
 
 const IMG_BUILDING = "https://cdn.poehali.dev/projects/fb115b39-8c84-40f6-9584-70685d6c64c1/files/8abbde57-a635-4434-9464-8719a6294457.jpg";
 const IMG_TEAM = "https://cdn.poehali.dev/projects/fb115b39-8c84-40f6-9584-70685d6c64c1/files/c9fcb170-4888-4668-8d23-59110f32c444.jpg";
