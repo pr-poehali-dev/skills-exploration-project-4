@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Создание заявки",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Тест Тестов",
+        "phone": "+375 (29) 123-45-67",
+        "address": "ул. Ленина, 1",
+        "comment": "Тестовая заявка",
+        "source": "hero"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Без телефона — ошибка",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Без телефона"},
+      "expectedStatus": 400
+    }
+  ]
+}
