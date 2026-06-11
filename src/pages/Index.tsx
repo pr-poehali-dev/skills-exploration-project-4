@@ -183,9 +183,11 @@ export default function Index() {
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 backdrop-blur-md"
         style={{ background: "rgba(13,13,13,0.92)", borderBottom: "1px solid rgba(201,168,76,0.12)" }}>
-        <div className="text-xl uppercase tracking-[0.15em]" style={{ fontFamily: "'Oswald', sans-serif" }}>
-          <span className="gradient-gold">Быстро</span>
-          <span style={{ color: "var(--cream)" }}>Квадрат</span>
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 flex items-center justify-center" style={{ background: "var(--gold)" }}>
+            <Icon name="House" size={18} style={{ color: "var(--coal)" }} />
+          </div>
+          <span className="text-xl uppercase tracking-[0.15em] font-bold" style={{ fontFamily: "'Oswald', sans-serif", color: "var(--cream)" }}>Срочно</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.15em]" style={{ color: "var(--smoke)" }}>
           {["Преимущества", "Процесс", "Кейсы", "Команда", "Контакты"].map(l => (
@@ -497,9 +499,11 @@ export default function Index() {
       {/* FOOTER */}
       <footer className="py-12 px-6 md:px-16 lg:px-24" style={{ borderTop: "1px solid rgba(201,168,76,0.15)" }}>
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-lg uppercase tracking-[0.15em]" style={{ fontFamily: "'Oswald', sans-serif" }}>
-            <span className="gradient-gold">Быстро</span>
-            <span style={{ color: "var(--cream)" }}>Квадрат</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 flex items-center justify-center" style={{ background: "var(--gold)" }}>
+              <Icon name="House" size={15} style={{ color: "var(--coal)" }} />
+            </div>
+            <span className="text-lg uppercase tracking-[0.15em] font-bold" style={{ fontFamily: "'Oswald', sans-serif", color: "var(--cream)" }}>Срочно</span>
           </div>
           <p className="text-xs uppercase tracking-wider" style={{ color: "var(--smoke)" }}>© 2024 БыстроКвадрат · Брест · Срочный выкуп квартир</p>
           <div className="text-xs uppercase tracking-wider" style={{ color: "var(--smoke)" }}>ООО "БыстроКвадрат" · УНП 123456789</div>
